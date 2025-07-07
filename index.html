@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Struk Transfer Mandiri</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #fff;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .container {
+      position: relative;
+      width: 375px;
+      margin: 0 auto;
+    }
+    .background {
+      width: 100%;
+      display: block;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      font-size: 12px;
+      color: #000;
+    }
+    .overlay .field {
+      position: absolute;
+      text-align: left;
+      white-space: nowrap;
+    }
+    #tanggal     { top: 169px; font-size: 12px; left: 35px; color: #666; font-weight: normal; }
+    #noref       { top: 184px; font-size: 12px; left: 35px; color: #666; font-weight: normal; }
+    #penerima    { top: 290px; left: 47px; font-size: 14px; font-weight: bold; }
+    #norek       { top: 316px; font-size: 12px; left: 125px; font-weight: normal; }
+    #nominal     { top: 439px; font-weight: bold; right: 48px; text-align: right; left: auto; }
+    #pengirim    { top: 516px; font-weight: bold; left: 47px; }
+    #rekpengirim { top: 544px; font-size: 12px; left: 125px; font-weight: normal; }
+
+    .button-wrap {
+      text-align: center;
+      margin: 20px auto;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 14px;
+      background-color: #007b7f;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005e5e;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="captureArea">
+    <img src="https://i.imgur.com/8PMpell.png" alt="Struk Mandiri" class="background" />
+    <div class="overlay">
+      <div class="field" id="tanggal">06 Jul 2025 • 12:55:15 WIB</div>
+      <div class="field" id="noref">2507061122010444767</div>
+      <div class="field" id="penerima">YULIANUS LASE</div>
+      <div class="field" id="norek">1070010751255</div>
+      <div class="field" id="nominal">Rp 50.000.000</div>
+      <div class="field" id="pengirim">AHMAD SAEPUL</div>
+      <div class="field" id="rekpengirim">••••••5073</div>
+    </div>
+  </div>
+
+  <div class="button-wrap">
+    <button onclick="acakData()">Acak Data</button>
+    <button onclick="downloadStruk()">Download Gambar</button>
+  </div>
+
+  <script>
+    function acakData() {
+      const namaList = ["YULIANUS LASE", "RINA MAHARANI", "AYU SARI", "DEWI ANGGRAINI", "JOKO PURNOMO", "SRI RAHAYU", "ANDI SAPUTRA", "FENDY HALIM", "ERICO SAMBO", "HERU WINDAKA", "ALIONG SARVIN", "WULANDARI", "FERI ALDINO"];
+      const norekList = ["1070010751255", "1234567890123", "2100451123344"];
+      const rekPengirimList = ["1056"];
+      const nominal = (Math.floor(Math.random() * 801) + 200) * 100000;
+
+      const nama = namaList[Math.floor(Math.random() * namaList.length)];
+      const norek = norekList[Math.floor(Math.random() * norekList.length)];
+      const rekAkhir = rekPengirimList[Math.floor(Math.random() * rekPengirimList.length)];
+
+      const now = new Date();
+      const jam = now.toLocaleTimeString("id-ID", { hour12: false });
+      const tanggal = now.toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" }).replace('.', '');
+      const ref = Math.floor(Math.random() * 1e17).toString().padStart(17, '0');
+
+      document.getElementById("tanggal").innerText = `${tanggal} • ${jam} WIB`;
+      document.getElementById("noref").innerText = ref;
+      document.getElementById("penerima").innerText = nama;
+      document.getElementById("norek").innerText = norek;
+      document.getElementById("pengirim").innerText = "AHMAD SAEPUL";
+      document.getElementById("rekpengirim").innerText = "••••••" + rekAkhir;
+      document.getElementById("nominal").innerText = "Rp " + nominal.toLocaleString("id-ID");
+    }
+
+    function downloadStruk() {
+      html2canvas(document.getElementById("captureArea"), {
+        useCORS: true,
+        scale: 3
+      }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "bukti-transfer-mandiri.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>
